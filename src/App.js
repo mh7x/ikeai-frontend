@@ -1,13 +1,29 @@
 import './App.css';
 
+import { useState } from 'react';
+
 import Container from './UI/Container';
 import ContentBox from './UI/ContentBox';
 import FileUpload from './Components/FileUpload';
 import SelectAutocomplete from './Components/SelectAutocomplete';
 import Modal from './Components/Modal';
 import ImageSwiper from './Components/ImageSwiper';
+import InitialImagePreview from './Components/InitialImagePreview';
 
 function App() {
+
+    const [uploadedImage, setUploadedImage] = useState(null);
+
+    const handleFileUpload = event => {
+        if (!event.target.files[0]) return;
+        let filetype = event.target.files[0].type;
+        if (filetype !== 'image/jpeg' && filetype !== 'image/png') {
+          alert('Wrong image format. Currently supported formats are: jpg, jpeg, png.');
+          return;
+        }
+        setUploadedImage(URL.createObjectURL(event.target.files[0]));
+    }
+
     return (
         <Container>
             <div className="text text-center mb-10">
@@ -16,7 +32,12 @@ function App() {
             </div>
             <ContentBox>
                 <SelectAutocomplete />
-                <FileUpload />
+                {uploadedImage == null && <FileUpload
+                    onFileUpload={handleFileUpload}
+                />}
+                {uploadedImage != null && <InitialImagePreview
+                    uploadedImage={uploadedImage}
+                />}
             </ContentBox>
             <div className="mt-10 mb-5">
                 <h2 className="text-3xl text-gray-700">Examples</h2>
