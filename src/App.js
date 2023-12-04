@@ -4,15 +4,18 @@ import { useState } from 'react';
 
 import Container from './UI/Container';
 import ContentBox from './UI/ContentBox';
+import Button from './UI/Button';
 import FileUpload from './Components/FileUpload';
 import SelectAutocomplete from './Components/SelectAutocomplete';
 import Modal from './Components/Modal';
 import ImageSwiper from './Components/ImageSwiper';
 import InitialImagePreview from './Components/InitialImagePreview';
+import GeneratedImagePreview from './Components/GeneratedImagePreview';
 
 function App() {
 
     const [uploadedImage, setUploadedImage] = useState(null);
+    const [resultsAvailable, setResultsAvailable] = useState(false);
 
     const handleFileUpload = event => {
         if (!event.target.files[0]) return;
@@ -24,6 +27,11 @@ function App() {
         setUploadedImage(URL.createObjectURL(event.target.files[0]));
     }
 
+    const handleImagineClick = () => {
+        alert("Imagine clicked");
+        setResultsAvailable(true);
+    }
+
     return (
         <Container>
             <div className="text text-center mb-10">
@@ -32,12 +40,29 @@ function App() {
             </div>
             <ContentBox>
                 <SelectAutocomplete />
-                {uploadedImage == null && <FileUpload
+                {uploadedImage == null && 
+                    <FileUpload
                     onFileUpload={handleFileUpload}
-                />}
-                {uploadedImage != null && <InitialImagePreview
-                    uploadedImage={uploadedImage}
-                />}
+                    />
+                }
+                {(uploadedImage != null && !resultsAvailable) && 
+                    <div>
+                        <InitialImagePreview
+                            uploadedImage={uploadedImage}
+                            />
+                        <Button 
+                            title={"Imagine"}
+                            class={"mt-3"}
+                            onClick={handleImagineClick}
+                        />
+                    </div>
+                }
+                {resultsAvailable &&
+                    <GeneratedImagePreview
+                        generatedImage1={"https://images.unsplash.com/photo-1648554130751-d71d42967691?q=80&w=2075&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"}
+                        generatedImage2={"https://images.unsplash.com/photo-1648554130751-d71d42967691?q=80&w=2075&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"}
+                    />
+                }
             </ContentBox>
             <div className="mt-10 mb-5">
                 <h2 className="text-3xl text-gray-700">Examples</h2>
