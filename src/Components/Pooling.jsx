@@ -24,8 +24,9 @@ export default function Pooling({ taskId, handleResults }) {
                     }}
                     onFailure={() => console.log('handle failure')} // this is optional
                     method={'GET'}
-                    // headers={headers object} // this is optional
-                    // body={JSON.stringify(data)} // data to send in a post call. Should be stringified always
+                    render={() => { // looks like it is mandatory
+                        return (<></>)
+                    }}
                 />
             }
         </>
