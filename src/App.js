@@ -22,7 +22,7 @@ function App() {
     const [pooling, setPooling] = useState(false);
     const [taskId, setTaskId] = useState('');
     const [generatedImages, setGeneratedImages] = useState(null);
-    const [selectedStyle, setSelectedStyle] = useState({ id: 1, name: 'Scandinavian style' });
+    const [selectedStyle, setSelectedStyle] = useState({id: 1, name: 'Scandinavian style', code: "scandinavian"});
     const [positivePrompt, setPositivePrompt] = useState('');
     const [negativePrompt, setNegativePrompt] = useState('');
 
@@ -43,8 +43,9 @@ function App() {
         setPooling(true);
         let data = new FormData();
         data.append('image', uploadedImage.image);
-        data.append('style', '1');
-        data.append('prompt', '2');
+        data.append('style', selectedStyle.code);
+        data.append('positive_prompt', positivePrompt);
+        data.append('negative_prompt', negativePrompt);
         axios({
             method: 'POST',
             url: url + '/generate',
