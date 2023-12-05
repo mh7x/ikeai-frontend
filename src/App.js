@@ -8,6 +8,7 @@ import ContentBox from './UI/ContentBox';
 import Button from './UI/Button';
 import FileUpload from './Components/FileUpload';
 import SelectAutocomplete from './Components/SelectAutocomplete';
+import Prompt from './Components/Prompt';
 import Modal from './Components/Modal';
 import ImageSwiper from './Components/ImageSwiper';
 import InitialImagePreview from './Components/InitialImagePreview';
@@ -21,6 +22,9 @@ function App() {
     const [pooling, setPooling] = useState(false);
     const [taskId, setTaskId] = useState('');
     const [generatedImages, setGeneratedImages] = useState(null);
+    const [selectedStyle, setSelectedStyle] = useState({id: 1, name: 'Scandinavian style'});
+    const [positivePrompt, setPositivePrompt] = useState('');
+    const [negativePrompt, setNegativePrompt] = useState('');
 
     const url = 'http://localhost:8000';
 
@@ -71,7 +75,24 @@ function App() {
                 <div className="text-xl font-light text-gray-600 mt-3">Personalize, Visualize, Transform: <span className="font-bold">Your Space, Reimagined.</span></div>
             </div>
             <ContentBox>
-                <SelectAutocomplete />
+                <SelectAutocomplete 
+                    selected={selectedStyle}
+                    setSelected={setSelectedStyle}
+                />
+                <Prompt 
+                    title="Tell us your imagination"
+                    placeholder="I want couch, leather, carpet..."
+                    style="border-gray-200 ring-gray-200 focus:ring-green-500 focus:border-green-500"
+                    value = {positivePrompt}
+                    onChange = {setPositivePrompt}
+                    />
+                <Prompt 
+                    title="What's not on your mind?"
+                    placeholder="I don't want a table, lamp, or a chair..."
+                    style="border-gray-200 ring-gray-200 focus:ring-red-500 focus:border-red-500"
+                    value = {negativePrompt}
+                    onChange = {setNegativePrompt}
+                />
                 {uploadedImage == null && 
                     <FileUpload
                     onFileUpload={handleFileUpload}

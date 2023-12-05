@@ -7,7 +7,7 @@ const designs = [
   { id: 2, name: 'Japandi style' },
   { id: 3, name: 'Boho style' },
   { id: 4, name: 'Mediteranian style' },
-  { id: 5, name: 'Country house' },
+  { id: 5, name: 'Country house style' },
   { id: 6, name: 'Midcentury style' },
   { id: 7, name: 'Industrial style' },
   { id: 8, name: 'Bauhaus style' },
@@ -15,8 +15,7 @@ const designs = [
   { id: 10, name: 'Traditional style' },
 ]
 
-export default function Example() {
-  const [selected, setSelected] = useState(designs[0])
+export default function Example({ selected, setSelected }) {
   const [query, setQuery] = useState('')
 
   const filtereddesigns =
