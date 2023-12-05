@@ -32,7 +32,7 @@ export default function Select({ selected, setSelected }) {
                             <Listbox.Option
                                 key={personIdx}
                                 className={({ active }) =>
-                                    `relative cursor-default select-none py-2 pl-10 pr-4 ${active ? "bg-blue-100 text-gray-900" : "text-gray-900"}`
+                                    `relative cursor-pointer select-none py-2 pl-10 pr-4 ${active ? "bg-blue-100 text-gray-900" : "text-gray-900"}`
                                 }
                                 value={person}>
                                 {({ selected }) => (

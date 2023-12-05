@@ -11,7 +11,7 @@ export default function FileUpload ({ onFileUpload }) {
                             <div className="mt-4 flex text-sm leading-6 text-gray-600">
                                 <label
                                     htmlFor="file-upload"
-                                    className="relative cursor-pointer rounded-md bg-white font-semibold text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-indigo-500 transition duration-300"
+                                    className="relative cursor-pointer rounded-md bg-white font-semibold text-indigo-600 focus-within:outline-none hover:text-indigo-500 transition duration-300"
                                 >
                                     <span>Upload a video or an image</span>
                                     <input id="file-upload" name="file-upload" type="file" className="sr-only" onChange={e => onFileUpload(e)}/>
