@@ -1,19 +1,18 @@
-import { useState } from 'react';
-import './GeneratedImagePreview.css';
-import ImagePopUp from './ImagePopUp';
-import Button from '../UI/Button';
-export default function GeneratedImagePreview ({ generatedImage1, generatedImage2 }) {
-    let [isOpen, setIsOpen] = useState(false)
-    let [previewImage, setPreviewImage] = useState('')
+import { useState } from "react";
+import ImagePopUp from "./ImagePopUp";
+import Button from "../UI/Button";
 
+export default function GeneratedImagePreview({ generatedImage1, generatedImage2 }) {
+    let [isOpen, setIsOpen] = useState(false);
+    let [previewImage, setPreviewImage] = useState("");
 
     function closeModal() {
-        setIsOpen(false)
+        setIsOpen(false);
     }
 
     function openModal(previewImage) {
-        setIsOpen(true)
-        setPreviewImage(previewImage)
+        setIsOpen(true);
+        setPreviewImage(previewImage);
     }
 
     return (
@@ -23,23 +22,37 @@ export default function GeneratedImagePreview ({ generatedImage1, generatedImage
                     <div className="text-center grid grid-cols-1 md:grid-cols-2">
                         <div className="mt-4 flex flex-col text-sm leading-6 text-gray-600 px-1">
                             <p className="text-md text-gray-400 font-light mt-1">1st Generation</p>
-                            <img src={generatedImage1} alt="" className="hover:brightness-75 hover:drop-shadow-xl hover:cursor-pointer" onClick={e => openModal(generatedImage1)}/>
+                            <img
+                                src={generatedImage1}
+                                alt=""
+                                className="hover:brightness-75 hover:drop-shadow-xl hover:cursor-pointer"
+                                onClick={(e) => openModal(generatedImage1)}
+                            />
                             <div>
                                 <Button
                                     title="Download"
                                     class="mt-2 float-left"
-                                    onClick={() => {window.open(generatedImage1, '_blank').focus()}}
+                                    onClick={() => {
+                                        window.open(generatedImage1, "_blank").focus();
+                                    }}
                                 />
                             </div>
                         </div>
                         <div className="mt-4 flex flex-col text-sm leading-6 text-gray-600 px-1">
                             <p className="text-md text-gray-400 font-light mt-1">2nd Generation</p>
-                            <img src={generatedImage2} alt="" className="hover:brightness-75 hover:drop-shadow-xl hover:cursor-pointer" onClick={e => openModal(generatedImage2)}/>
+                            <img
+                                src={generatedImage2}
+                                alt=""
+                                className="hover:brightness-75 hover:drop-shadow-xl hover:cursor-pointer"
+                                onClick={(e) => openModal(generatedImage2)}
+                            />
                             <div>
                                 <Button
                                     title="Download"
                                     class="mt-2 float-left"
-                                    onClick={() => {window.open(generatedImage2, '_blank').focus()}}
+                                    onClick={() => {
+                                        window.open(generatedImage2, "_blank").focus();
+                                    }}
                                 />
                             </div>
                         </div>
@@ -47,12 +60,7 @@ export default function GeneratedImagePreview ({ generatedImage1, generatedImage
                     </div>
                 </div>
             </div>
-        <ImagePopUp
-            image={previewImage}
-            isOpen={isOpen}
-            closeModal={closeModal}
-            openModal={openModal}
-        />
+            <ImagePopUp image={previewImage} isOpen={isOpen} closeModal={closeModal} openModal={openModal} />
         </div>
     );
 }

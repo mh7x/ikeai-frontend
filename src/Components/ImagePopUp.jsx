@@ -1,6 +1,5 @@
 import { Dialog, Transition } from '@headlessui/react'
 import { Fragment, useState } from 'react'
-import './ImagePopUp.css';
 
 export default function ImagePopUp({ image, isOpen, closeModal, openModal }) {
     return (
@@ -31,7 +30,7 @@ export default function ImagePopUp({ image, isOpen, closeModal, openModal }) {
                                 leaveTo="opacity-0 scale-95"
                             >
                                 <div className=''>
-                                    <img src={image} className='max-h-almost-full' alt="" />
+                                    <img src={image} className='max-h-[95vh]' alt="" />
                                 </div>
                             </Transition.Child>
                         </div>
