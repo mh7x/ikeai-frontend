@@ -18,9 +18,9 @@ const designs = [
 export default function Select({ selected, setSelected }) {
     return (
         <Listbox value={selected} onChange={setSelected}>
-            <Listbox.Label className="block text-sm font-medium leading-6 text-gray-900">Select style of interior design</Listbox.Label>
+            <Listbox.Label className="block text-sm font-medium leading-6 text-gray-900" htmlFor="select">Select style of interior design</Listbox.Label>
             <div className="relative mt-1">
-                <Listbox.Button className="relative border w-full cursor-default rounded-lg bg-white p-2.5 pr-10 text-left shadow-md focus:outline-none sm:text-sm hover:cursor-pointer">
+                <Listbox.Button className="relative border w-full cursor-default rounded-lg bg-white p-2.5 pr-10 text-left shadow-md focus:outline-none sm:text-sm hover:cursor-pointer" id="select">
                     <span className="block truncate">{selected.name}</span>
                     <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
                         <ChevronUpDownIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />

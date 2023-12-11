@@ -15,6 +15,8 @@ import InitialImagePreview from './Components/InitialImagePreview';
 import GeneratedImagePreview from './Components/GeneratedImagePreview';
 import Pooling from './Components/Pooling';
 import FullscreenLoader from './Components/FullscreenLoader';
+import TagSinput from './Components/TagsInput';
+import Checkbox from './UI/Checkbox';
 
 function App() {
     const [uploadedImage, setUploadedImage] = useState(null);
@@ -25,6 +27,8 @@ function App() {
     const [selectedStyle, setSelectedStyle] = useState({ id: 1, name: 'Scandinavian style', code: "scandinavian" });
     const [positivePrompt, setPositivePrompt] = useState('');
     const [negativePrompt, setNegativePrompt] = useState('');
+    const [customPrompt, setCustomPrompt] = useState('');
+    const [adventuresMode, setAdventuresMode] = useState(false);
 
     const url = 'http://localhost:8000';
 
@@ -44,8 +48,8 @@ function App() {
         let data = new FormData();
         data.append('image', uploadedImage.image);
         data.append('style', selectedStyle.code);
-        data.append('positive_prompt', positivePrompt);
-        data.append('negative_prompt', negativePrompt);
+        data.append('positive_prompt', "asd");
+        data.append('negative_prompt', "asd");
         axios({
             method: 'POST',
             url: url + '/generate',
@@ -80,22 +84,35 @@ function App() {
                     selected={selectedStyle}
                     setSelected={setSelectedStyle}
                 />
-                <Prompt
-                    title="Tell us your imagination"
+                <TagSinput
+                    title="What do you want in the room?"
                     id="positivePrompt"
-                    placeholder="I want couch, leather, carpet..."
-                    style="border-gray-200 ring-gray-200 focus:ring-green-500 focus:border-green-500 transition-all"
+                    placeholder="Wooden chair, white carpet, ..."
                     value={positivePrompt}
                     onChange={setPositivePrompt}
                 />
-                <Prompt
-                    title="What's not on your mind?"
+                <TagSinput
+                    title="What do you NOT want in the room?"
                     id="negativePrompt"
-                    placeholder="I don't want a table, lamp, or a chair..."
-                    style="border-gray-200 ring-gray-200 focus:ring-red-500 focus:border-red-500 transition-all"
+                    placeholder="Plastic chair, black carpet, ..."
                     value={negativePrompt}
                     onChange={setNegativePrompt}
                 />
+                <Checkbox
+                    title="Do you feel adventurous?"
+                    value={adventuresMode}
+                    onChange={setAdventuresMode}
+                />
+                {adventuresMode && 
+                    <Prompt 
+                        title="Custom prompt"
+                        placeholder="Type in your custom prompt..."
+                        id="customPrompt"
+                        style="border-gray-200 ring-gray-200 focus:ring-0 focus:outline-0 transition-all"
+                        value={customPrompt}
+                        onChange={setCustomPrompt}
+                    />
+                }
                 {uploadedImage == null &&
                     <FileUpload
                         onFileUpload={handleFileUpload}
