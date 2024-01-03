@@ -13,11 +13,11 @@ export default function FileUpload ({ onFileUpload }) {
                                     htmlFor="file-upload"
                                     className="relative cursor-pointer rounded-md bg-white font-semibold text-indigo-600 focus-within:outline-none hover:text-indigo-500 transition duration-300"
                                 >
-                                    <span>Upload a video or an image</span>
+                                    <span>Upload an image</span>
                                     <input id="file-upload" name="file-upload" type="file" className="sr-only" onChange={e => onFileUpload(e)}/>
                                 </label>
                             </div>
-                            <p className="text-xs leading-5 text-gray-600">PNG, JPG, GIF up to 10MB</p>
+                            <p className="text-xs leading-5 text-gray-600">PNG, JPG up to 10MB</p>
                         </div>
                     </div>
                 </div>

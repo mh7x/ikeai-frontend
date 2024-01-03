@@ -15,8 +15,12 @@ import InitialImagePreview from './Components/InitialImagePreview';
 import GeneratedImagePreview from './Components/GeneratedImagePreview';
 import Pooling from './Components/Pooling';
 import FullscreenLoader from './Components/FullscreenLoader';
-import TagSinput from './Components/TagsInput';
+import TagsInput from './Components/TagsInput';
 import Checkbox from './UI/Checkbox';
+import Tabs from './UI/Tabs';
+
+import { designs } from './Utils/categories';
+import { rooms } from './Utils/rooms';
 
 function App() {
     const [uploadedImage, setUploadedImage] = useState(null);
@@ -25,10 +29,15 @@ function App() {
     const [taskId, setTaskId] = useState('');
     const [generatedImages, setGeneratedImages] = useState(null);
     const [selectedStyle, setSelectedStyle] = useState({ id: 1, name: 'Scandinavian style', code: "scandinavian" });
-    const [positivePrompt, setPositivePrompt] = useState('');
-    const [negativePrompt, setNegativePrompt] = useState('');
+    const [selectedRoom, setSelectedRoom] = useState({ id: 0, name: 'None', code: "none" });
     const [customPrompt, setCustomPrompt] = useState('');
     const [adventuresMode, setAdventuresMode] = useState(false);
+    const [positiveTags, setPositiveTags] = useState([]);
+    const [negativeTags, setNegativeTags] = useState([]);
+    const [mode, setMode] = useState('design');
+    const [drawing, setDrawing] = useState(false);
+    const [markerAreaInfo, setMarkerAreaInfo] = useState(null);
+    const [objectPrompt, setObjectPrompt] = useState('');
 
     const url = 'http://localhost:8000';
 
@@ -42,23 +51,62 @@ function App() {
         setUploadedImage({ image: event.target.files[0], url: URL.createObjectURL(event.target.files[0]) });
     }
 
+    const concatTags = (tags) => {
+        let result = '';
+        tags.forEach(tag => {
+            result += tag + ',';
+        });
+        result = result.slice(0, -1);
+        return result;
+    }
+
     const handleImagineClick = () => {
         if (!uploadedImage) return;
         setPooling(true);
         let data = new FormData();
-        data.append('image', uploadedImage.image);
-        data.append('style', selectedStyle.code);
-        data.append('positive_prompt', "asd");
-        data.append('negative_prompt', "asd");
+
+        let endpoint = '/';
+        let positivePrompt = '';
+        let negativePrompt = '';
+        if (mode === 'design'){
+            positivePrompt = selectedRoom.name !== 'None' ? '(' + selectedRoom.name  + '),'+ concatTags(positiveTags) : concatTags(positiveTags);
+            positivePrompt = customPrompt !== '' ? positivePrompt + ',' + customPrompt : positivePrompt;
+            negativePrompt = concatTags(negativeTags);
+            data.append('image', uploadedImage.image);
+            data.append('style', selectedStyle.code);
+            data.append('positive_prompt', positivePrompt);
+            data.append('negative_prompt', negativePrompt);
+            endpoint = '/design';
+        }
+        else if (mode === 'replace'){
+            if (objectPrompt === ''){
+                alert('You need to specify the object you want in the image!');
+                setPooling(false);
+                return;
+            }
+            data.append('image', uploadedImage.image);
+            data.append('canvasHeight', markerAreaInfo.height);
+            data.append('canvasWidth', markerAreaInfo.width);
+            data.append('prompt', objectPrompt);
+            let marker = {
+                left: markerAreaInfo.marker.left,
+                top: markerAreaInfo.marker.top,
+                width: markerAreaInfo.marker.width,
+                height: markerAreaInfo.marker.height
+            };
+            data.append('marker', JSON.stringify(marker));
+            endpoint = '/replace'
+        }
         axios({
             method: 'POST',
-            url: url + '/generate',
+            url: url + endpoint,
             data: data
         }).then(response => {
             let taskId = response.data.task_id;
             setTaskId(taskId);
             console.log(taskId);
             console.log(response);
+            setDrawing(false);
         }).catch(error => {
             setTaskId('');
             setPooling(false);
@@ -73,6 +121,11 @@ function App() {
         setResultsAvailable(true);
     }
 
+    const handleSetMode = (m) => {
+        if (m === 'design' && drawing) return;
+        setMode(m);
+    }
+
     return (
         <Container>
             <div className="text text-center mb-10">
@@ -80,38 +133,65 @@ function App() {
                 <div className="text-xl font-light text-gray-600 mt-3">Personalize, Visualize, Transform: <span className="font-bold">Your Space, Reimagined.</span></div>
             </div>
             <ContentBox>
-                <Select
-                    selected={selectedStyle}
-                    setSelected={setSelectedStyle}
-                />
-                <TagSinput
-                    title="What do you want in the room?"
-                    id="positivePrompt"
-                    placeholder="Wooden chair, white carpet, ..."
-                    value={positivePrompt}
-                    onChange={setPositivePrompt}
-                />
-                <TagSinput
-                    title="What do you NOT want in the room?"
-                    id="negativePrompt"
-                    placeholder="Plastic chair, black carpet, ..."
-                    value={negativePrompt}
-                    onChange={setNegativePrompt}
-                />
-                <Checkbox
-                    title="Do you feel adventurous?"
-                    value={adventuresMode}
-                    onChange={setAdventuresMode}
-                />
-                {adventuresMode && 
-                    <Prompt 
-                        title="Custom prompt"
-                        placeholder="Type in your custom prompt..."
-                        id="customPrompt"
-                        style="border-gray-200 ring-gray-200 focus:ring-0 focus:outline-0 transition-all"
-                        value={customPrompt}
-                        onChange={setCustomPrompt}
-                    />
+                <Tabs mode={mode} setMode={handleSetMode}/>
+                {(mode === 'design') &&
+                    <>
+                        <Select
+                            selected={selectedStyle}
+                            setSelected={setSelectedStyle}
+                            items={designs}
+                            title="Select style of interior design"
+                        />
+                        <Select
+                            selected={selectedRoom}
+                            setSelected={setSelectedRoom}
+                            items={rooms}
+                            title="Do you have a specific room in mind?"
+                        />
+                        <TagsInput
+                            title="What do you want in the room?"
+                            id="positivePrompt"
+                            placeholder="Wooden chair, white carpet, ..."
+                            tags={positiveTags}
+                            setTags={setPositiveTags}
+                            customClass=""
+                        />
+                        <TagsInput
+                            title="What do you NOT want in the room?"
+                            id="negativePrompt"
+                            placeholder="Plastic chair, black carpet, ..."
+                            tags={negativeTags}
+                            setTags={setNegativeTags}
+                            customClass=""
+                        />
+                        <Checkbox
+                            title="Do you feel adventurous?"
+                            value={adventuresMode}
+                            onChange={setAdventuresMode}
+                        />
+                        {adventuresMode && 
+                            <Prompt 
+                                title="Custom prompt"
+                                placeholder="Type in your custom prompt..."
+                                id="customPrompt"
+                                style="border-gray-200 ring-gray-200 focus:ring-0 focus:outline-0 transition-all"
+                                value={customPrompt}
+                                onChange={setCustomPrompt}
+                            />
+                        }
+                    </>
+                }
+                {mode === 'replace' &&
+                    <>
+                        <Prompt 
+                            title="What object you want in the image?"
+                            placeholder="Type in the object..."
+                            id="objectPrompt"
+                            style="border-gray-200 ring-gray-200 focus:ring-0 focus:outline-0 transition-all"
+                            value={objectPrompt}
+                            onChange={setObjectPrompt}
+                        />
+                    </>
                 }
                 {uploadedImage == null &&
                     <FileUpload
@@ -122,6 +202,9 @@ function App() {
                     <div>
                         <InitialImagePreview
                             uploadedImage={uploadedImage.url}
+                            mode={mode}
+                            setDrawing={setDrawing}
+                            setMarkerAreaInfo={setMarkerAreaInfo}
                         />
                         <div className="text-center">
                             <Button
@@ -137,8 +220,7 @@ function App() {
                 }
                 {(resultsAvailable && generatedImages != null) &&
                     <GeneratedImagePreview
-                        generatedImage1={generatedImages[0]}
-                        generatedImage2={generatedImages[1]}
+                        generatedImages={generatedImages}
                     />
                 }
             </ContentBox>
