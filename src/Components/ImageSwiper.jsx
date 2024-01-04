@@ -43,13 +43,13 @@ export default function ImageSwiper(props) {
                 className="w-full h-[300px] mx-auto relative select-none "
             >
                 <img
-                    src={ props.image }
+                    src={ props.inputImage }
                     alt=""
                     className="pointer-events-none rounded h-full w-full object-cover"
                 />
                 <img
-                    style={{ filter: "grayscale(100%)", clipPath: `polygon(0 0, ${imageRevealFraction * 100}% 0, ${imageRevealFraction * 100}% 100%, 0 100%)` }}
-                    src={ props.image }
+                    style={{ clipPath: `polygon(0 0, ${imageRevealFraction * 100}% 0, ${imageRevealFraction * 100}% 100%, 0 100%)` }}
+                    src={ props.outputImage }
                     alt=""
                     className="absolute inset-0 pointer-events-none rounded h-full w-full object-cover"
                 />

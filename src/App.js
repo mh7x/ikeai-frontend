@@ -229,12 +229,12 @@ function App() {
                 <div className="text-md text-gray-400 font-light mt-1">Here are some examples of generated results:</div>
             </div>
             <div className="grid lg:grid-cols-3 gap-5">
-                <div className="..."><ImageSwiper image="https://images.unsplash.com/photo-1648554130751-d71d42967691?q=80&w=2075&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" /></div>
-                <div className="..."><ImageSwiper image="https://images.unsplash.com/photo-1695938887083-31f814779e54?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" /></div>
-                <div className="..."><ImageSwiper image="https://images.unsplash.com/photo-1700471880758-2c1011b275ca?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" /></div>
-                <div className="..."><ImageSwiper image="https://plus.unsplash.com/premium_photo-1701085339951-db8f1d9b5113?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" /></div>
-                <div className="..."><ImageSwiper image="https://images.unsplash.com/photo-1701077136756-3b8439292118?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" /></div>
-                <div className="..."><ImageSwiper image="https://images.unsplash.com/photo-1701077137611-9be394bf62f0?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" /></div>
+                <div className="..."><ImageSwiper inputImage='images/input_0.jpg' outputImage='images/output_0.png' /></div>
+                <div className="..."><ImageSwiper inputImage='images/input_1.jpg' outputImage='images/output_1.png' /></div>
+                <div className="..."><ImageSwiper inputImage='images/input_2.jpg' outputImage='images/output_2.png' /></div>
+                <div className="..."><ImageSwiper inputImage='images/input_3.jpeg' outputImage='images/output_3.png' /></div>
+                <div className="..."><ImageSwiper inputImage='images/input_4.jpeg' outputImage='images/output_4.png' /></div>
+                <div className="..."><ImageSwiper inputImage='images/input_5.jpeg' outputImage='images/output_5.png' /></div>
             </div>
             <Modal />
             {pooling && <FullscreenLoader />}
