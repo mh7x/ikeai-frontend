@@ -38,6 +38,7 @@ function App() {
     const [drawing, setDrawing] = useState(false);
     const [markerAreaInfo, setMarkerAreaInfo] = useState(null);
     const [objectPrompt, setObjectPrompt] = useState('');
+    const [segmentation, setSegmentation] = useState(true);
 
     const url = 'http://localhost:8000';
 
@@ -88,6 +89,7 @@ function App() {
             data.append('canvasHeight', markerAreaInfo.height);
             data.append('canvasWidth', markerAreaInfo.width);
             data.append('prompt', objectPrompt);
+            data.append('segment', segmentation);
             let marker = {
                 left: markerAreaInfo.marker.left,
                 top: markerAreaInfo.marker.top,
@@ -191,6 +193,11 @@ function App() {
                             value={objectPrompt}
                             onChange={setObjectPrompt}
                         />
+                        <Checkbox
+                            title="Do you want to segment the object from selected area?"
+                            value={segmentation}
+                            onChange={setSegmentation}
+                        />
                     </>
                 }
                 {uploadedImage == null &&
@@ -219,9 +226,21 @@ function App() {
                     <Pooling taskId={taskId} handleResults={handleResults} />
                 }
                 {(resultsAvailable && generatedImages != null) &&
-                    <GeneratedImagePreview
-                        generatedImages={generatedImages}
-                    />
+                    <>
+                        <GeneratedImagePreview
+                            generatedImages={generatedImages}
+                        />
+                        {generatedImages.length == 2 &&
+                        <div className='text-center'>
+                            <Button
+                                title="Imagine again"
+                                class="mt-2 mx-3"
+                                onClick={() => {
+                                    window.location.reload();
+                                }}
+                            />
+                        </div>}
+                    </>
                 }
             </ContentBox>
             <div className="mt-10 mb-5">

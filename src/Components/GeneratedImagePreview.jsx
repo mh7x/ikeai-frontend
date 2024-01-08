@@ -2,7 +2,7 @@ import { useState } from "react";
 import ImagePopUp from "./ImagePopUp";
 import Button from "../UI/Button";
 
-export default function GeneratedImagePreview({ generatedImages }) {
+export default function GeneratedImagePreview({ generatedImages, handleVideoClick }) {
     let [isOpen, setIsOpen] = useState(false);
     let [previewImage, setPreviewImage] = useState("");
 
@@ -35,10 +35,25 @@ export default function GeneratedImagePreview({ generatedImages }) {
                                     window.open(generatedImages[0], "_blank").focus();
                                 }}
                             />
+                            <Button
+                                title="Imagine again"
+                                class="mt-2 mx-3"
+                                onClick={() => {
+                                    window.location.reload();
+                                }}
+                            />
+                            {/* <Button
+                                title="Video"
+                                class="mt-2"
+                                onClick={() => {
+                                    handleVideoClick(generatedImages[0]);
+                                }}
+                            /> */}
                         </div>
                     </div>
                     }
                     {generatedImages.length == 2 &&
+                    <>
                         <div className="text-center grid grid-cols-1 md:grid-cols-2">
                             <div className="mt-4 flex flex-col text-sm leading-6 text-gray-600 px-1">
                                 <p className="text-md text-gray-400 font-light">1st Generation</p>
@@ -77,6 +92,7 @@ export default function GeneratedImagePreview({ generatedImages }) {
                                 </div>
                             </div>
                         </div>
+                    </>
                     }
                 </div>
             </div>
